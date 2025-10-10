@@ -18,7 +18,7 @@ export interface Feedback {
   projectId: string
   category: string
   message: string
-  timestamp: string
+  createdAt: string
   status?: string
 }
 
@@ -120,7 +120,7 @@ export const feedbackApi = {
         }, 600)
       })
     }
-    alert("Submitting feedback to backend /feedback/project/:projectId")
+   
     const response = await apiClient.post("/feedback/project/"+data.projectId, data)
     return response.data
   },

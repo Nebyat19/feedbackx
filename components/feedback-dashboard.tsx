@@ -1,5 +1,6 @@
 import { MessageSquare, Clock } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { formatDateTime } from "@/lib/utils"
 
 const feedbackItems = [
   {
@@ -70,7 +71,9 @@ export function FeedbackDashboard() {
                   <h3 className="font-medium text-sm">{item.category}</h3>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                     <Clock className="w-3 h-3" />
-                    {item.timestamp}
+                                        <span className="truncate text-gray-500 text-sm">
+                      {formatDateTime(item.createdAt)}
+                    </span>
                   </div>
                 </div>
               </div>

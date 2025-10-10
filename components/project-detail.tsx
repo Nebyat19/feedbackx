@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import useSWR from "swr"
 import { projectApi, feedbackApi } from "@/lib/api-services"
 import { useState } from "react"
+import { formatDateTime } from "@/lib/utils"
 
 const FEEDBACK_STATUSES = ["New", "In Progress", "Reviewed", "Resolved", "Archived"] as const
 
@@ -234,7 +235,9 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                       </div>
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                         <Clock className="w-3 h-3" />
-                        <span className="truncate">{item.timestamp}</span>
+                        <span className="truncate text-gray-500 text-sm">
+  {formatDateTime(item.createdAt)}
+</span>
                       </div>
                     </div>
                   </div>
