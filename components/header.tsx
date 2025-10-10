@@ -14,8 +14,12 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { MobileSidebar } from "./mobile-sidebar"
 import Link from "next/link"
+import { useUser } from "@/app/hooks/useUser"
+import { useState } from "react"
 
 export function Header() {
+  const { user, loading, error, updateUser } = useUser()
+  const [name, setName] = useState("")
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-sm border-b border-border">
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
@@ -76,8 +80,9 @@ export function Header() {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div>
-                  <p className="font-medium">John Doe</p>
-                  <p className="text-xs text-muted-foreground">john@example.com</p>
+                  <p className="font-medium">{user?.name}</p>
+                  <p className="text-xs text-muted-foreground">{user?.email}</p>
+                 <p className="text-sm text-gray-400"> joined on {new Date(user?.createdAt || "").toLocaleDateString()}</p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />

@@ -14,7 +14,7 @@ export class FeedbackController {
   }
 
   // Public endpoint - get public feedback
-  @Get('project/:projectId/public')
+  @Get('project/:projectId') 
   findAllPublic(@Param('projectId') projectId: string) {
     return this.feedbackService.findAllPublic(projectId);
   }

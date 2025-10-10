@@ -1,13 +1,14 @@
 import { apiClient } from "./api-config"
 import { mockProjects, mockFeedback, getMockFeedbackByProject, getMockProjectById } from "./mock-data"
 
-export const USE_MOCK_DATA = true
+export const USE_MOCK_DATA = false
 
 export interface Project {
   id: string
   title: string
   description: string
   isPublic: boolean
+  status: "active" | "paused"
   feedbackCount: number
   createdAt: string
 }
@@ -67,7 +68,8 @@ export const projectApi = {
             id: `proj-${Date.now()}`,
             ...data,
             feedbackCount: 0,
-            createdAt: "Just now",
+            status: 'active',
+            createdAt:  new Date().toISOString(),
           }
           mockProjects.unshift(newProject)
           resolve(newProject)
@@ -98,7 +100,7 @@ export const feedbackApi = {
         setTimeout(() => resolve(getMockFeedbackByProject(projectId)), 400)
       })
     }
-    const response = await apiClient.get(`/projects/${projectId}/feedback`)
+    const response = await apiClient.get(`/feedback/project/${projectId}`)
     return response.data
   },
 
@@ -118,7 +120,8 @@ export const feedbackApi = {
         }, 600)
       })
     }
-    const response = await apiClient.post("/feedback", data)
+    alert("Submitting feedback to backend /feedback/project/:projectId")
+    const response = await apiClient.post("/feedback/project/"+data.projectId, data)
     return response.data
   },
 
@@ -157,7 +160,7 @@ export const publicApi = {
         }, 300)
       })
     }
-    const response = await apiClient.get(`/p/${projectId}`)
+    const response = await apiClient.get(`/projects/p/${projectId}`)
     return response.data
   },
 
@@ -168,7 +171,7 @@ export const publicApi = {
         setTimeout(() => resolve(getMockFeedbackByProject(projectId)), 400)
       })
     }
-    const response = await apiClient.get(`/p/${projectId}/feedback`)
+    const response = await apiClient.get(`/feedback/project/${projectId}`)
     return response.data
   },
 }
@@ -204,3 +207,19 @@ export const authApi = {
     return response.data
   },
 }
+
+
+export const profileApi = {
+  // GET /auth/me - Get current user profile
+  getProfile: async () => {
+    const response = await apiClient.get("/auth/me")
+    return response.data
+  },
+
+  // PUT /auth/me - Update current user profile
+  updateProfile: async (data: { name?: string; email?: string; password?: string }) => {
+    const response = await apiClient.put("/auth/me", data)
+    return response.data
+  },
+}
+

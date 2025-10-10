@@ -61,4 +61,10 @@ export class ProjectsController {
   getStats(@Param("id") id: string, @Req() req: AuthenticatedRequest) {
     return this.projectsService.getStats(id, req.user.id)
   }
+
+  //return projet for feedback
+  @Get("p/:id")
+  getProjectForFeedback(@Param("id") id: string) {
+    return this.projectsService.findOne(id)
+  }
 }

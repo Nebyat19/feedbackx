@@ -209,7 +209,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
           </div>
         ) : feedbackError ? (
-          <p className="text-destructive text-center py-12">Failed to load feedback.</p>
+          <p className="text-primary text-center py-12">No feedback found!</p>
         ) : filteredFeedback && filteredFeedback.length === 0 ? (
           <p className="text-muted-foreground text-center py-12">
             {activeFilter === "All" ? "No feedback yet." : `No ${activeFilter.toLowerCase()} feedback.`}

@@ -39,6 +39,7 @@ export function PublicFeedbackPage({ projectId }: { projectId: string }) {
         message: feedback,
       }
       await feedbackApi.submit(feedbackData)
+      
 
       if (project?.isPublic) {
         mutate()
@@ -183,7 +184,7 @@ export function PublicFeedbackPage({ projectId }: { projectId: string }) {
                 <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
               </div>
             ) : feedbackError ? (
-              <p className="text-destructive text-center py-12">Failed to load feedback.</p>
+              <p className="text-muted-foreground text-center py-12">No feedback yet. Be the first to share!</p>
             ) : existingFeedback && existingFeedback.length === 0 ? (
               <p className="text-muted-foreground text-center py-12">No feedback yet. Be the first to share!</p>
             ) : (

@@ -92,7 +92,7 @@ export function ProjectList() {
               New Project
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[500px]">
+          <DialogContent className="sm:max-w-[90%]">
             <DialogHeader>
               <DialogTitle className="font-serif text-2xl">Create New Project</DialogTitle>
               <DialogDescription>Set up a new feedback collection project with a shareable link.</DialogDescription>
