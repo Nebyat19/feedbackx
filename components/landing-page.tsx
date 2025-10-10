@@ -79,13 +79,16 @@ export function LandingPage() {
       <p className="text-lg text-muted-foreground max-w-md">
         Explore the dashboard that makes feedback collection effortless. Manage projects, view analytics, and collaborate with your team—all in one place.
       </p>
+<Link href="/signup" className="w-full sm:w-auto">
       <Button
         size="lg"
         className="bg-secondary text-secondary-foreground hover:bg-secondary/90 gap-2 text-base sm:text-lg px-6 sm:px-8 py-4"
       >
-        Try it now
+
+Try it now
         <ArrowRight className="w-5 h-5" />
       </Button>
+      </Link>
     </div>
   </div>
 </div>
