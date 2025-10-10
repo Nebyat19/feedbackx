@@ -25,7 +25,26 @@ async function bootstrap() {
       transform: true,
     }),
   )
-
+  app.enableCors({
+    origin: [
+      process.env.FRONTEND_URL || "http://localhost:3000",
+      "https://feedbackx.vercel.app",
+    ],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    credentials: true,
+  })
+  
+  // Handle preflight OPTIONS requests manually (for serverless)
+  app.use((req, res, next) => {
+    if (req.method === "OPTIONS") {
+      res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL || "http://localhost:3000")
+      res.header("Access-Control-Allow-Methods", "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS")
+      res.header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+      res.header("Access-Control-Allow-Credentials", "true")
+      return res.sendStatus(204)
+    }
+    next()
+  })
   const port = process.env.PORT || 4000
   if (process.env.NODE_ENV !== 'production') {
   await app.listen(port)
