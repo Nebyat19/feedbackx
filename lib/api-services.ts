@@ -184,7 +184,7 @@ export const authApi = {
   },
 
   // POST /auth/login - Login user
-  login: async (data: { email: string; password: string }) => {
+  login: async (data: { email: string; password: string, rememberMe:boolean }) => {
     const response = await apiClient.post("/auth/login", data)
     return response.data
   },

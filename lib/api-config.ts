@@ -8,25 +8,10 @@ export const apiClient = axios.create({
     "Content-Type": "application/json",
   },
   timeout: 10000,
+  withCredentials: true, 
 })
 
-apiClient.interceptors.request.use(
-  (config) => {
-    // Add auth token if available
-    const token = sessionStorage.getItem("auth_token")
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }else{
-      config.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGU5MDVkZTAxZjkwMzllNDg5ZGVkNDUiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTc2MDExNTk3MiwiZXhwIjoxNzYwMjAyMzcyfQ.9_hnWnn45B6lnwKeju6pnKSv2T6_RNnE5yOUf1sHmxA'
-      console.log(" auth token default used")
-    }
 
-    return config
-  },
-  (error) => {
-    return Promise.reject(error)
-  },
-)
 
 apiClient.interceptors.response.use(
   (response) => response,

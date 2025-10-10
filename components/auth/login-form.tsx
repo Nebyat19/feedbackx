@@ -27,20 +27,11 @@ export function LoginForm() {
     let data;
     try {
       const response =
-        authApi.login({ email, password }) || (await Promise.resolve());
+        authApi.login({ email, password, rememberMe }) || (await Promise.resolve());
        data = await response;
 
       if (!data.ok) {
         //  throw new Error(data.message || "Login failed")
-      }
-
-      // Store token
-      if (rememberMe) {
-      localStorage.setItem("auth_token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      }else {
-        sessionStorage.setItem("auth_token", data.token);
-        sessionStorage.setItem("user", JSON.stringify(data.user));
       }
 
       // Redirect to dashboard
