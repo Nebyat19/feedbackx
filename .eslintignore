@@ -1,0 +1,10 @@
+# Ignore backend folder (NestJS project)
+backend/
+
+# Ignore build outputs
+dist/
+build/
+.next/
+
+# Ignore dependencies
+node_modules/

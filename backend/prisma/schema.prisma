@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @map("_id") @default(auto()) @db.ObjectId
+  email     String    @unique
+  name      String?
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[] 
+}
+
+model Project {
+  id          String     @id @map("_id") @default(auto()) @db.ObjectId
+  title       String
+  description String?
+  isPublic    Boolean    @default(true)
+  status      String     @default("active") // active, paused
+  userId      String     @db.ObjectId
+  user        User       @relation(fields: [userId], references: [id])
+  feedback    Feedback[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+model Feedback {
+  id         String    @id @map("_id") @default(auto()) @db.ObjectId
+  message    String
+  category   String
+  status     String    @default("new") // new, in_progress, reviewed, resolved, archived
+  projectId  String    @db.ObjectId
+  project    Project   @relation(fields: [projectId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([projectId])
+  @@index([status])
+}
