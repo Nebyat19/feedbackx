@@ -13,11 +13,6 @@ export class AuthService {
 
   async signup(dto: SignupDto) {
  
-    dto = {
-      email: "adamweiss651@gmail.com",
-      name: "Adam Weiss",
-      password: "StrongPassword123!"
-    }
   
     // Check if user exists
     const existingUser = await this.prisma.user.findUnique({
@@ -57,10 +52,7 @@ export class AuthService {
 
   async login(dto: LoginDto) {
     // Find user
-    dto = {
-      email:  "adamweiss651@gmail.com",
-     password: "StrongPassword123!"
-    }
+  
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email},
     })

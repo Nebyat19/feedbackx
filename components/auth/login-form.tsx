@@ -24,11 +24,11 @@ export function LoginForm() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-
+    let data;
     try {
       const response =
         authApi.login({ email, password }) || (await Promise.resolve());
-      const data = await response;
+       data = await response;
 
       if (!data.ok) {
         //  throw new Error(data.message || "Login failed")
@@ -45,8 +45,13 @@ export function LoginForm() {
 
       // Redirect to dashboard
       router.push("/dashboard");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+    } catch (err:any) {
+      if(err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("An error occurred");
+      }
+     
     } finally {
       setIsLoading(false);
     }
