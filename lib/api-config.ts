@@ -16,7 +16,10 @@ apiClient.interceptors.request.use(
     const token = localStorage.getItem("auth_token")
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
+    }else{
+      console.log("No auth token found")
     }
+
     return config
   },
   (error) => {
