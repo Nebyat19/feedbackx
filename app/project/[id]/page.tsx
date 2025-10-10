@@ -8,8 +8,8 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 lg:ml-64 p-6 md:p-8 lg:p-12">
-          <div className="max-w-7xl mx-auto">
+        <main className="flex-1 lg:ml-64 p-2 md:p-8 lg:p-12 w-[90%] md:w-auto">
+          <div className=" mx-auto">
             <ProjectDetail projectId={params.id} />
           </div>
         </main>
