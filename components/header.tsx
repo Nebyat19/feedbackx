@@ -23,7 +23,7 @@ export function Header() {
   const [name, setName] = useState("")
   const handleLogOut = async () => {
     try {
-      const response = await apiClient.get("/api/auth/logout", {
+      const response = await apiClient.get("/logout", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -124,12 +124,12 @@ export function Header() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem className="text-destructive" asChild>
               <button onClick={handleLogOut} className="w-full text-left">
                 <LogOut className="w-4 h-4 mr-2" />
                 Log out
               </button>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
