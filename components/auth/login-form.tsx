@@ -37,7 +37,7 @@ export function LoginForm() {
       localStorage.setItem("user", JSON.stringify(data.user))
 
       // Redirect to dashboard
-      router.push("/")
+      router.push("/dashboard")
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred")
     } finally {

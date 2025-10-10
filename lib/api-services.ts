@@ -1,7 +1,7 @@
 import { apiClient } from "./api-config"
 import { mockProjects, mockFeedback, getMockFeedbackByProject, getMockProjectById } from "./mock-data"
 
-export const USE_MOCK_DATA = false
+export const USE_MOCK_DATA = true
 
 export interface Project {
   id: string

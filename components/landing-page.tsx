@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Globe, Lock, LinkIcon, BarChart3, Users, Shield, Zap } from "lucide-react"
 import { LandingNav } from "./landing-nav"
+import Image from "next/image"
 
 export function LandingPage() {
   return (
@@ -57,10 +58,42 @@ export function LandingPage() {
             <p className="text-sm text-muted-foreground">No credit card required • Free forever</p>
           </div>
         </div>
+        <div className="relative mt-20 px-4 sm:px-6 lg:px-8">
+  <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center gap-12 lg:gap-20 max-w-7xl mx-auto">
+    {/* Left: Image */}
+    <div>
+      <Image
+        src="/dashboard-screenshot.png"
+        alt="FeedbackX Dashboard Screenshot"
+        width={1200}
+        height={1000}
+        className="rounded-2xl shadow-lg border border-border"
+      />
+    </div>
+
+    {/* Right: Text */}
+    <div className="text-center lg:text-left space-y-4">
+      <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-balance">
+        See FeedbackX in Action
+      </h2>
+      <p className="text-lg text-muted-foreground max-w-md">
+        Explore the dashboard that makes feedback collection effortless. Manage projects, view analytics, and collaborate with your team—all in one place.
+      </p>
+      <Button
+        size="lg"
+        className="bg-secondary text-secondary-foreground hover:bg-secondary/90 gap-2 text-base sm:text-lg px-6 sm:px-8 py-4"
+      >
+        Try it now
+        <ArrowRight className="w-5 h-5" />
+      </Button>
+    </div>
+  </div>
+</div>
+
       </section>
 
       {/* Features Grid */}
-      <section className="relative px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+      <section className="relative px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl mb-4 text-balance">
