@@ -1,20 +1,17 @@
-import { Handler } from '@vercel/node'
-import { NestFactory } from '@nestjs/core'
-import { AppModule } from '../src/app.module'
-import { ExpressAdapter } from '@nestjs/platform-express'
-import express from 'express'
+import { NestFactory } from "@nestjs/core"
+import { AppModule } from "../src/app.module"
+import { ExpressAdapter } from "@nestjs/platform-express"
+import express, { Request, Response } from "express"
 
 const server = express()
-
 let cachedApp: any = null
 
-const handler: Handler = async (req, res) => {
+export default async function handler(req: Request, res: Response) {
   if (!cachedApp) {
     const app = await NestFactory.create(AppModule, new ExpressAdapter(server))
     await app.init()
     cachedApp = app
   }
-  server(req, res)
-}
 
-export default handler
+  return server(req, res)
+}
