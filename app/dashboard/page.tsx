@@ -9,7 +9,7 @@ export default function DashboardPage() {
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-4 sm:p-6 md:p-8 lg:p-12">
+        <main className="flex-1 p-4 lg:ml-64 sm:p-6 md:p-8 lg:p-12">
           <div className="max-w-7xl mx-auto space-y-6 md:space-y-8">
             {/* Welcome Section */}
             <div className="bg-card rounded-2xl p-6 sm:p-8 shadow-sm">

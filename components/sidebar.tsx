@@ -17,11 +17,13 @@ export function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="hidden lg:block w-64 bg-sidebar border-r border-sidebar-border p-6">
-      <nav className="space-y-2">
+    <aside className="hidden pt-20 lg:flex flex-col fixed top-0 left-0 h-screen w-64 bg-sidebar border-r border-sidebar-border p-6">
+      <nav className="space-y-2 mt-10">
         {navItems.map((item) => {
           const Icon = item.icon
-          const isActive = pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href))
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/dashboard" && pathname.startsWith(item.href))
 
           return (
             <Link
@@ -29,7 +31,9 @@ export function Sidebar() {
               href={item.href}
               className={cn(
                 "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all",
-                isActive ? "bg-accent text-accent-foreground" : "text-sidebar-foreground hover:bg-sidebar-accent/50",
+                isActive
+                  ? "bg-accent text-accent-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
               )}
             >
               <Icon className="w-5 h-5" />

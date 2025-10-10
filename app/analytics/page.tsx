@@ -9,7 +9,7 @@ export default function AnalyticsPage() {
       <Header />
       <div className="flex">
         <Sidebar />
-        <main className="flex-1 p-6 md:p-8 lg:p-12">
+        <main className="flex-1 lg:ml-64 p-6 md:p-8 lg:p-12">
           <div className="max-w-7xl mx-auto">
             <Breadcrumbs />
             <h1 className="font-serif text-4xl mb-8">Analytics</h1>
