@@ -7,7 +7,11 @@ async function bootstrap() {
 
   // Enable CORS for frontend
   app.enableCors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: [
+      process.env.FRONTEND_URL || "http://localhost:3000",
+      "https://feedbackx.vercel.app", 
+    ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
   })
 
@@ -24,9 +28,9 @@ async function bootstrap() {
 
   const port = process.env.PORT || 4000
   if (process.env.NODE_ENV !== 'production') {
-    await app.listen(port)
+  await app.listen(port)
   }
-  
+
   
   console.log(`🚀 FeedbackX API running on http://localhost:${port}/api`)
 }
