@@ -17,7 +17,8 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }else{
-      console.log("No auth token found")
+      config.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGU5MDVkZTAxZjkwMzllNDg5ZGVkNDUiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTc2MDExNTk3MiwiZXhwIjoxNzYwMjAyMzcyfQ.9_hnWnn45B6lnwKeju6pnKSv2T6_RNnE5yOUf1sHmxA'
+      console.log(" auth token default used")
     }
 
     return config
