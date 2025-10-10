@@ -75,10 +75,12 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   if (projectError) {
     return (
       <div className="bg-card rounded-2xl p-8 shadow-sm">
-        <p className="text-destructive">Failed to load project. Please try again.</p>
-      </div>
+      <p className="text-muted-foreground text-center">Project not found.</p>
+    </div>
     )
   }
+
+
 
   return (
     <div className="space-y-6">
