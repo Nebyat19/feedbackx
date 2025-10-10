@@ -17,19 +17,14 @@ import Link from "next/link"
 import { useUser } from "@/app/hooks/useUser"
 import { useState } from "react"
 import { apiClient } from "@/lib/api-config"
+import { authApi } from "@/lib/api-services"
 
 export function Header() {
   const { user, loading, error, updateUser } = useUser()
   const [name, setName] = useState("")
   const handleLogOut = async () => {
     try {
-      const response = await apiClient.get("/logout", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-
+      const response = await authApi.logout()
       if (!response) {
         throw new Error("Logout failed")
       }
