@@ -24,8 +24,8 @@ export function LandingPage() {
               <span className="text-accent-foreground font-medium">Anonymous feedback made simple</span>
             </div>
 
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-balance leading-tight">
-              Collect honest feedback with shareable links
+            <h1 className="fontfeedback-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-balance leading-tight">
+              Collect honest  with shareable links
             </h1>
 
             <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto text-pretty">
@@ -200,7 +200,7 @@ export function LandingPage() {
             Start collecting feedback today
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto text-pretty">
-            Join thousands of teams using feedback.me to gather honest, actionable insights.
+            Join thousands of teams using feedbackx.me to gather honest, actionable insights.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link href="/signup" className="w-full sm:w-auto">
@@ -224,9 +224,9 @@ export function LandingPage() {
               <div className="w-8 h-8 bg-foreground rounded-xl flex items-center justify-center">
                 <Shield className="w-4 h-4 text-card" />
               </div>
-              <span className="font-serif text-lg sm:text-xl font-semibold">feedback.me</span>
+              <span className="font-serif text-lg sm:text-xl font-semibold">feedbackx.me</span>
             </div>
-            <p className="text-sm text-muted-foreground">© 2025 feedback.me. All rights reserved.</p>
+            <p className="text-sm text-muted-foreground">© 2025 feedbackx.me. All rights reserved.</p>
           </div>
         </div>
       </footer>

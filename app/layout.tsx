@@ -14,9 +14,44 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "feedback.me - Anonymous Feedback Platform",
+  title: "feedbackx.me - Anonymous Feedback Platform",
   description: "Collect and manage anonymous feedback with shareable links. Simple, private, and powerful.",
   generator: "",
+  applicationName: "feedbackx",
+  referrer: "origin-when-cross-origin",
+  keywords: [
+    "feedback",
+    "anonymous feedback",
+    "feedback platform",
+    "shareable feedback",
+    "private feedback",
+    "feedback management",
+    "user feedback",
+    "feedback collection",
+    "feedback tool",
+    "feedback app",
+  ],
+  authors: [{ name: "Nebyat B", url: "https://nebyat.vercel.app/" }],
+  colorScheme: "light dark",
+  creator: "Nebyat B",
+  publisher: "Nebyat B",
+  metadataBase: new URL("https://feedbackx.me"),
+  openGraph: {
+    title: "feedbackx.me - Feedback Platform",
+    description: "Collect and manage anonymous and public feedback with shareable links. Simple, private, and powerful.",
+    url: "https://feedbackx.me",
+    siteName: "feedbackx",
+    images: [
+      {
+        url: "https://feedbackx.me/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "feedbackx.me - Feedback Platform",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 }
 
 export default function RootLayout({
@@ -25,7 +60,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" >
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+      <link rel="icon" href="/logo.png" />
+     
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />

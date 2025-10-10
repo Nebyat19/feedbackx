@@ -15,7 +15,7 @@ export function LandingNav() {
             <span className="text-card font-bold text-xl">FX</span>
             </div>
            
-            <span className="font-serif text-xl sm:text-2xl font-semibold">feedback.me</span>
+            <span className="font-serif text-xl sm:text-2xl font-semibold">feedbackx.me</span>
           </Link>
 
           <div className="flex items-center gap-2 sm:gap-4">

@@ -12,9 +12,9 @@ import Link from "next/link"
 // Mock data for demo
 const mockProject = {
   id: "demo-123",
-  title: "feedback.me Platform",
+  title: "feedbackx.me Platform",
   description:
-    "Help us improve feedback.me by sharing your thoughts, suggestions, and ideas. Your feedback shapes the future of our platform.",
+    "Help us improve feedbackx.me by sharing your thoughts, suggestions, and ideas. Your feedback shapes the future of our platform.",
   isPublic: true,
 }
 

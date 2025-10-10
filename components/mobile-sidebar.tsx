@@ -22,7 +22,7 @@ export function MobileSidebar() {
         <div className="w-8 h-8 bg-foreground rounded-lg flex items-center justify-center">
           <MessageSquare className="w-4 h-4 text-card" />
         </div>
-        <span className="font-serif text-xl font-semibold">feedback.me</span>
+        <span className="font-serif text-xl font-semibold">feedbackx.me</span>
       </Link>
 
       <nav className="space-y-2">

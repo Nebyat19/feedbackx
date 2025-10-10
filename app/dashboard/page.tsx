@@ -15,7 +15,7 @@ export default function DashboardPage() {
             <div className="bg-card rounded-2xl p-6 sm:p-8 shadow-sm">
               <p className="text-sm text-muted-foreground mb-2">Hi there,</p>
               <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl text-balance mb-4 md:mb-6">
-                Welcome to feedback.me.
+                Welcome to feedbackx.me.
               </h1>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
                 Create projects and collect anonymous feedback from your team, customers, or community. Share links and

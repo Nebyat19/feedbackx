@@ -37,7 +37,7 @@ export function Header() {
           <span className="text-amber-50">  FX</span>
           </div>
             </div>
-            <span className="font-serif text-lg sm:text-xl font-semibold  xs:block">feedback.me</span>
+            <span className="font-serif text-lg sm:text-xl font-semibold  xs:block">feedbackx.me</span>
           </Link>
         </div>
 
