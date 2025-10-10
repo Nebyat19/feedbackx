@@ -23,7 +23,11 @@ async function bootstrap() {
   )
 
   const port = process.env.PORT || 4000
-  await app.listen(port)
+  if (process.env.NODE_ENV !== 'production') {
+    await app.listen(port)
+  }
+  
+  
   console.log(`🚀 FeedbackX API running on http://localhost:${port}/api`)
 }
 bootstrap()
