@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "feedback.me - Anonymous Feedback Platform",
   description: "Collect and manage anonymous feedback with shareable links. Simple, private, and powerful.",
-  generator: "v0.app",
+  generator: "",
 }
 
 export default function RootLayout({

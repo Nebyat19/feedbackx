@@ -7,11 +7,14 @@ import { LandingNav } from "./landing-nav"
 
 export function LandingPage() {
   return (
-    <div className="min-h-screen">
-      <LandingNav />
-
-      {/* Hero Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-32">
+    <div className="relative min-h-screen bg-background overflow-hidden">
+    {/* Transparent grid pattern */}
+    <div className="absolute inset-0 pattern z-0" />
+  
+    <LandingNav />
+  
+    {/* Hero Section */}
+    <section className="relative  px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-32">
     
         <div className="max-w-7xl mx-auto">
           <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
@@ -57,7 +60,7 @@ export function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+      <section className="relative px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl mb-4 text-balance">
@@ -122,7 +125,7 @@ export function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+      <section className="relative px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl mb-4 text-balance">How it works</h2>
@@ -191,7 +194,7 @@ export function LandingPage() {
       </section>
 */}
       {/* CTA Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-32">
+      <section className="relative px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-32">
         <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-balance leading-tight">
             Start collecting feedback today
@@ -214,7 +217,7 @@ export function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <footer className="relative border-t border-border px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2 sm:gap-3">

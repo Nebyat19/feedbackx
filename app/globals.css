@@ -123,6 +123,13 @@
     @apply bg-background text-foreground;
     /* Added gradient background from beige to pink */
     background: linear-gradient(135deg, oklch(0.92 0.02 85) 0%, oklch(0.9 0.03 25) 100%);
-    background-attachment: fixed;
+    background-attachment: fixed; 
   }
+}
+
+.pattern {
+  background-color: #e5e5f7;
+ 
+  opacity: 0.3;
+  background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #e5e5f7 10px ), repeating-linear-gradient( #a0f74555, #a0f745 );
 }
