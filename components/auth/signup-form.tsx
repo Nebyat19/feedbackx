@@ -43,7 +43,7 @@ export function SignupForm() {
 
       const data = await response
 
-      if (!data.ok) {
+      if (!data) {
         throw new Error(data.message || "Signup failed")
       }
 
