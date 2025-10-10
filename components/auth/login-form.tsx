@@ -18,6 +18,7 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,8 +35,13 @@ export function LoginForm() {
       }
 
       // Store token
+      if (rememberMe) {
       localStorage.setItem("auth_token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      }else {
+        sessionStorage.setItem("auth_token", data.token);
+        sessionStorage.setItem("user", JSON.stringify(data.user));
+      }
 
       // Redirect to dashboard
       router.push("/dashboard");
@@ -106,15 +112,17 @@ export function LoginForm() {
           </div>
           {/** remember me */}
           <div className="flex items-center">
-            <input
-              id="remember"
-              type="checkbox"
-              className="h-4 w-4 text-secondary focus:ring-2 focus:ring-offset-0 focus:ring-secondary"
-            />
-            <Label htmlFor="remember" className="ml-2 text-sm">
-              Remember me
-            </Label>
-          </div>
+        <input
+          id="remember"
+          type="checkbox"
+          className="h-4 w-4 text-secondary focus:ring-2 focus:ring-offset-0 focus:ring-secondary"
+          onChange={(e) => setRememberMe(e.target.checked)}
+        />
+        <label htmlFor="remember" className="ml-2 text-sm">
+          Remember me
+        </label>
+      </div>
+
 
           <Button
             type="submit"
