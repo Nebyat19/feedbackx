@@ -16,20 +16,21 @@ import { MobileSidebar } from "./mobile-sidebar"
 import Link from "next/link"
 import { useUser } from "@/app/hooks/useUser"
 import { useState } from "react"
+import { apiClient } from "@/lib/api-config"
 
 export function Header() {
   const { user, loading, error, updateUser } = useUser()
   const [name, setName] = useState("")
   const handleLogOut = async () => {
     try {
-      const response = await fetch("/api/auth/logout", {
+      const response = await apiClient.get("/api/auth/logout", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       })
 
-      if (!response.ok) {
+      if (!response) {
         throw new Error("Logout failed")
       }
 
@@ -123,10 +124,12 @@ export function Header() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogOut} className="text-destructive">
+              <DropdownMenuItem asChild>
+              <button onClick={handleLogOut} className="w-full text-left">
                 <LogOut className="w-4 h-4 mr-2" />
                 Log out
-              </DropdownMenuItem>
+              </button>
+            </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
