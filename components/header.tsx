@@ -20,6 +20,34 @@ import { useState } from "react"
 export function Header() {
   const { user, loading, error, updateUser } = useUser()
   const [name, setName] = useState("")
+  const handleLogOut = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error("Logout failed")
+      }
+
+      // Clear user state
+      updateUser({})
+
+      // Clear local storage
+      localStorage.removeItem("auth_token")
+      localStorage.removeItem("user")
+      sessionStorage.removeItem("auth_token")
+      sessionStorage.removeItem("user")
+
+      // Redirect to login page
+      window.location.href = "/login"
+    } catch (err) {
+      console.error(err)
+    }
+  }
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-sm border-b border-border">
       <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4">
@@ -95,7 +123,7 @@ export function Header() {
                 Settings
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem onClick={handleLogOut} className="text-destructive">
                 <LogOut className="w-4 h-4 mr-2" />
                 Log out
               </DropdownMenuItem>
