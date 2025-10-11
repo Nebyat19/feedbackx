@@ -61,11 +61,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" >
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-    
-      <link rel="icon" href="/logo.png" />
-     
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}>
+    <head>
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "ae936fcb73e349c2ad8427f823e86a8c"}'></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/logo.png" />
+    </head>
+    <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${playfair.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>
