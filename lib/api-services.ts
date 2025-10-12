@@ -212,13 +212,13 @@ export const authApi = {
 export const profileApi = {
   // GET /auth/me - Get current user profile
   getProfile: async () => {
-    const response = await apiClient.get("/auth/me")
+    const response = await apiClient.get("/users/me")
     return response.data
   },
 
   // PUT /auth/me - Update current user profile
   updateProfile: async (data: { name?: string; email?: string; password?: string }) => {
-    const response = await apiClient.put("/auth/me", data)
+    const response = await apiClient.put("/users/me", data)
     return response.data
   },
 }

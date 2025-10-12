@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { AlertCircle, Loader2 } from "lucide-react"
 import { authApi } from "@/lib/api-services"
+import { authClient } from "@/lib/auth-client"
 
 export function SignupForm() {
   const router = useRouter()
@@ -37,31 +38,16 @@ export function SignupForm() {
 
     setIsLoading(true)
 
-    try {
-      const response = authApi.signup({ name, email, password }) || await Promise.resolve()
    
-
-      const data = await response
-
-      if (!data) {
-        throw new Error(data.message || "Signup failed")
+      const {data, error} = await authClient.signUp.email({ name, email, password }) 
+  
+      if (data) {
+        router.push("/dashboard")
+        return
       }
-
-      // Store token
-      localStorage.setItem("auth_token", data.token)
-      localStorage.setItem("user", JSON.stringify(data.user))
-
-      // Redirect to dashboard
-      router.push("/dashboard")
-    } catch (err:any) {
-      if(err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message);
-      } else {
-        setError("An error occurred");
-      }
-    } finally {
+      setError(error?.message || "An error occurred during signup")
       setIsLoading(false)
-    }
+    
   }
 
   return (
@@ -88,7 +74,7 @@ export function SignupForm() {
             <Input
               id="name"
               type="text"
-              placeholder="John Doe"
+              placeholder="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required

@@ -11,6 +11,9 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { authApi } from "@/lib/api-services";
+import { authClient } from "@/lib/auth-client";
+import { Eye, EyeOff } from "lucide-react";
+
 
 export function LoginForm() {
   const router = useRouter();
@@ -18,34 +21,30 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-    let data;
-    try {
-      const response =
-        authApi.login({ email, password, rememberMe }) || (await Promise.resolve());
-       data = await response;
 
-      if (!data.ok) {
-        //  throw new Error(data.message || "Login failed")
-      }
+    const { data, error } = await authClient.signIn.email({
+      email,
+      password,
+      rememberMe,
+    });
 
-      // Redirect to dashboard
+    if (data) {
       router.push("/dashboard");
-    } catch (err:any) {
-      if(err.response && err.response.data && err.response.data.message) {
-        setError(err.response.data.message);
-      } else {
-        setError("An error occurred");
-      }
-     
-    } finally {
-      setIsLoading(false);
+      return;
     }
+
+    if (error?.code && error?.code == "INVALID_EMAIL_OR_PASSWORD") {
+      setError(error?.message || "Invalid email or password");
+    } 
+
+    setIsLoading(false);
   };
 
   return (
@@ -85,40 +84,50 @@ export function LoginForm() {
             />
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Link
-                href="/forgot-password"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                Forgot password?
-              </Link>
-            </div>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={isLoading}
-              className="h-11"
-            />
+          <div className="relative space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Password</Label>
+            <Link
+              href="/forgot-password"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Forgot password?
+            </Link>
           </div>
+
+          <div className="flex items-center"> 
+          <Input
+            id="password"
+            type={showPassword ? "text" : "password"}
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={isLoading}
+            className="h-11 pr-10" // add right padding for the icon
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="-ml-10 text-muted-foreground hover:text-foreground"
+          >
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+          </div>
+        </div>
           {/** remember me */}
           <div className="flex items-center">
-        <input
-          id="remember"
-          type="checkbox"
-          className="h-4 w-4 text-secondary focus:ring-2 focus:ring-offset-0 focus:ring-secondary"
-          onChange={(e) => setRememberMe(e.target.checked)}
-        />
-        <label htmlFor="remember" className="ml-2 text-sm">
-          Remember me
-        </label>
-      </div>
-
+            <input
+              id="remember"
+              type="checkbox"
+              className="h-4 w-4 text-secondary focus:ring-2 focus:ring-offset-0 focus:ring-secondary"
+              onChange={(e) => setRememberMe(e.target.checked)}
+            />
+            <label htmlFor="remember" className="ml-2 text-sm">
+              Remember me
+            </label>
+          </div>
 
           <Button
             type="submit"
@@ -145,7 +154,6 @@ export function LoginForm() {
             Sign up
           </Link>
         </div>
-        
       </div>
     </div>
   );

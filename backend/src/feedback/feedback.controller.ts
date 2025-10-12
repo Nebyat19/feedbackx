@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards, Request } from "@nestjs/common"
 import  { FeedbackService } from "./feedback.service"
 import type { CreateFeedbackDto, UpdateFeedbackStatusDto } from "./dto/feedback.dto"
-import { JwtAuthGuard } from "../auth/jwt-auth.guard"
+import { AuthGuard } from "@thallesp/nestjs-better-auth" 
 
 @Controller("feedback")
 export class FeedbackController {
@@ -20,19 +20,19 @@ export class FeedbackController {
   }
 
   // Protected endpoint - get all feedback for project owner
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Get("project/:projectId")
   findAll(@Param('projectId') projectId: string, @Query('status') status?: string) {
     return this.feedbackService.findAll(projectId, status)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Put(":id/status")
   updateStatus(@Request() req, @Param('id') id: string, @Body() dto: UpdateFeedbackStatusDto) {
     return this.feedbackService.updateStatus(id, req.user.id, dto)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Delete(":id")
   delete(@Request() req, @Param('id') id: string) {
     return this.feedbackService.delete(id, req.user.id)

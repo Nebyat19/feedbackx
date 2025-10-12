@@ -18,31 +18,16 @@ import { useUser } from "@/app/hooks/useUser"
 import { useState } from "react"
 import { apiClient } from "@/lib/api-config"
 import { authApi } from "@/lib/api-services"
+import { authClient } from "@/lib/auth-client"
 
 export function Header() {
   const { user, loading, error, updateUser } = useUser()
   const [name, setName] = useState("")
   const handleLogOut = async () => {
-    try {
-      const response = await authApi.logout()
-      if (!response) {
-        throw new Error("Logout failed")
-      }
-
-      // Clear user state
-      updateUser({})
-
-      // Clear local storage
-      localStorage.removeItem("auth_token")
-      localStorage.removeItem("user")
-      sessionStorage.removeItem("auth_token")
-      sessionStorage.removeItem("user")
-
-      // Redirect to login page
-      window.location.href = "/login"
-    } catch (err) {
-      console.error(err)
-    }
+  
+      const {data, error} = await authClient.signOut()
+      if(data?.success)  window.location.href = "/login"
+   
   }
   return (
     <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-sm border-b border-border">

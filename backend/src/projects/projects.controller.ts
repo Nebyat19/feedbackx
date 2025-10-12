@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common"
 import  { ProjectsService } from "./projects.service"
 import type { CreateProjectDto, UpdateProjectDto } from "./dto/project.dto"
-import { JwtAuthGuard } from "../auth/jwt-auth.guard"
+import { AuthGuard } from "@thallesp/nestjs-better-auth" 
 import type { Request } from "express"
 
 interface AuthenticatedRequest extends Request {
@@ -22,25 +22,25 @@ interface AuthenticatedRequest extends Request {
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Post()
   create(@Req() req: AuthenticatedRequest, @Body() dto: CreateProjectDto) {
     return this.projectsService.create(req.user.id, dto)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Get()
   findAll(@Req() req: AuthenticatedRequest) {
     return this.projectsService.findAll(req.user.id)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Get(":id")
   findOne(@Param("id") id: string, @Req() req: AuthenticatedRequest) {
     return this.projectsService.findOne(id, req.user.id)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Put(":id")
   update(
     @Param("id") id: string,
@@ -50,13 +50,13 @@ export class ProjectsController {
     return this.projectsService.update(id, req.user.id, dto)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Delete(":id")
   delete(@Param("id") id: string, @Req() req: AuthenticatedRequest) {
     return this.projectsService.delete(id, req.user.id)
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard)
   @Get(":id/stats")
   getStats(@Param("id") id: string, @Req() req: AuthenticatedRequest) {
     return this.projectsService.getStats(id, req.user.id)
