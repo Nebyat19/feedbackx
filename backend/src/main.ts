@@ -1,7 +1,9 @@
+require("dotenv").config();
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { toNodeHandler } from 'better-auth/node';
 import { AuthService } from '@thallesp/nestjs-better-auth';
+
 async function bootstrap() {
    // Disable NestJS's built-in body parser so we can control ordering
    const app = await NestFactory.create(AppModule, { bodyParser: false });
