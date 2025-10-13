@@ -4,6 +4,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { sendVerificationEmail } from "./send-email";
 
 const client = new MongoClient(process.env.DATABASE_URL);
 const db = client.db();
@@ -26,7 +27,19 @@ export const auth = betterAuth({
           httpOnly: true,
         },
       },
-    emailAndPassword: { enabled: true },
+    emailAndPassword: { 
+      enabled: true ,
+      requireEmailVerification: true,
+
+    },
+    emailVerification: {
+      sendOnSignUp: true, 
+      autoSignInAfterVerification: true, 
+      async sendVerificationEmail({ user, url, token }, request) {
+      
+        await sendVerificationEmail(user.email, token ); 
+      },
+    },
     trustedOrigins: [
         "http://localhost:3000",
         "https://feedbackx.me",

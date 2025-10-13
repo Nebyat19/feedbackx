@@ -35,12 +35,12 @@ export function LoginForm() {
       rememberMe,
     });
 
-    if (data) {
+    if (data?.user) {
       router.push("/dashboard");
       return;
     }
 
-    if (error?.code && error?.code == "INVALID_EMAIL_OR_PASSWORD") {
+    if (error?.code) {
       setError(error?.message || "Invalid email or password");
     } 
 
