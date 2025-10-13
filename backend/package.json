@@ -2,6 +2,7 @@
   "name": "feedbackx-backend",
   "version": "1.0.0",
   "description": "FeedbackX Backend API with NestJS and Better Auth",
+  "type": "module",
   "scripts": {
     "start": "nest start",
     "start:dev": "nest start --watch",
