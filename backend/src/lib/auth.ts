@@ -20,6 +20,11 @@ export const auth = betterAuth({
         database: {
           generateId: false,
         },
+        defaultCookieAttributes: {
+          sameSite: "none",
+          secure: true,
+          httpOnly: true,
+        },
       },
     emailAndPassword: { enabled: true },
     trustedOrigins: [
