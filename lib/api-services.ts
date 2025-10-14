@@ -33,6 +33,7 @@ export interface CreateFeedbackData {
   projectId: string
   category: string
   message: string
+  status?: string
 }
 
 export const projectApi = {
@@ -172,7 +173,7 @@ export const publicApi = {
         setTimeout(() => resolve(getMockFeedbackByProject(projectId)), 400)
       })
     }
-    const response = await apiClient.get(`/feedback/project/${projectId}`)
+    const response = await apiClient.get(`/feedback/public/project/${projectId}`)
     return response.data
   },
 }

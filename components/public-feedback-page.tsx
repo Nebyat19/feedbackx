@@ -38,6 +38,7 @@ export function PublicFeedbackPage({ projectId }: { projectId: string }) {
         projectId,
         category,
         message: feedback,
+        status:"New"
       }
       await feedbackApi.submit(feedbackData)
       

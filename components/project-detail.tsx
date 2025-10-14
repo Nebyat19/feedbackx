@@ -12,7 +12,7 @@ import { projectApi, feedbackApi } from "@/lib/api-services"
 import { useEffect, useState } from "react"
 import { formatDateTime } from "@/lib/utils"
 
-const FEEDBACK_STATUSES = ["new", "In Progress", "Reviewed", "Resolved", "Archived"] as const
+const FEEDBACK_STATUSES = ["New", "In Progress", "Reviewed", "Resolved", "Archived"] as const
 
 export function ProjectDetail({ projectId }: { projectId: string }) {
   const [project, setProject] = useState<any>([])
@@ -23,32 +23,43 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const [isActive, setIsActive] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [activeFilter, setActiveFilter] = useState("All")
+  const fetchProject = async () => {
+    try {
+      const projectData = await projectApi.getById(projectId)
+      setProject(projectData)
+      setIsPublic(projectData.isPublic)
+      setIsActive(projectData.status === "active")
+    } catch (error) {
+      setProjectError("Failed to fetch project")
+      console.error("Failed to fetch project:", error)
+    }
+  }
 
+  const fetchFeedback = async () => {
+    try {
+      const feedbackData = await feedbackApi.getByProject(projectId)
+      setFeedbackItems(feedbackData)
+    } catch (error) {
+      setFeedbackError("Failed to fetch feedback")
+      console.error("Failed to fe tch feedback:", error)
+    }
+  }
+  
+  
   useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        const projectData = await projectApi.getById(projectId)
-        setProject(projectData)
-        setIsPublic(projectData.isPublic)
-        setIsActive(projectData.status === "active")
-      } catch (error) {
-        setProjectError("Failed to fetch project")
-        console.error("Failed to fetch project:", error)
-      }
-    }
-
-    const fetchFeedback = async () => {
-      try {
-        const feedbackData = await feedbackApi.getByProject(projectId)
-        setFeedbackItems(feedbackData)
-      } catch (error) {
-        setFeedbackError("Failed to fetch feedback")
-        console.error("Failed to fe tch feedback:", error)
-      }
-    }
-    fetchProject()
-    fetchFeedback()
-  }, [projectId])
+    let intervalId: NodeJS.Timeout;
+  
+    const fetchData = async () => {
+      await fetchProject();   
+      await fetchFeedback();
+    };
+  
+    fetchData(); 
+  
+    intervalId = setInterval(fetchFeedback, 5000); 
+  
+    return () => clearInterval(intervalId); 
+  }, [projectId]);
   const handleUpdate = async (field: "title" | "description", value: string) => {
     if (!project) return
     setIsSaving(true)
