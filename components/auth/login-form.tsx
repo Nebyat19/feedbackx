@@ -13,7 +13,7 @@ import { AlertCircle, Loader2 } from "lucide-react";
 import { authApi } from "@/lib/api-services";
 import { authClient } from "@/lib/auth-client";
 import { Eye, EyeOff } from "lucide-react";
-
+import { SocialSigUp } from "./social-signup";
 
 export function LoginForm() {
   const router = useRouter();
@@ -29,26 +29,26 @@ export function LoginForm() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-  
+
     const { data, error } = await authClient.signIn.email({
       email,
       password,
       rememberMe,
     });
-  
+
     if (data?.user) {
       router.push("/dashboard");
       return;
     }
-  
+
     if (error) {
-      if (error?.code =="EMAIL_NOT_VERIFIED") {
+      if (error?.code == "EMAIL_NOT_VERIFIED") {
         setInfo("Please verify your email address before signing in");
       } else {
         setError(error?.message || "Invalid email or password");
       }
     }
-  
+
     setIsLoading(false);
   };
 
@@ -79,7 +79,15 @@ export function LoginForm() {
             <AlertDescription>{info}</AlertDescription>
           </Alert>
         )}
+        {/* Social Signup */}
+        <SocialSigUp setError={setError} />
+        {/* Divider */}
+        <div className="flex w-full items-center gap-2 py-6 text-sm text-slate-600">
+          <div className="h-px w-full bg-slate-200"></div>
+          or <div className="h-px w-full bg-slate-200"></div>
+        </div>
 
+        {/* Email Signup Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -96,37 +104,41 @@ export function LoginForm() {
           </div>
 
           <div className="relative space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link
-              href="/forgot-password"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Forgot password?
-            </Link>
-          </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="password">Password</Label>
+              <Link
+                href="/forgot-password"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
 
-          <div className="flex items-center"> 
-          <Input
-            id="password"
-            type={showPassword ? "text" : "password"}
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={isLoading}
-            className="h-11 pr-10" // add right padding for the icon
-          />
+            <div className="flex items-center">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+                className="h-11 pr-10" // add right padding for the icon
+              />
 
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="-ml-10 text-muted-foreground hover:text-foreground"
-          >
-            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-          </button>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="-ml-10 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
           </div>
-        </div>
           {/** remember me */}
           <div className="flex items-center">
             <input
