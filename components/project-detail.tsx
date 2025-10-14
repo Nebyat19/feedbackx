@@ -11,6 +11,7 @@ import useSWR from "swr"
 import { projectApi, feedbackApi } from "@/lib/api-services"
 import { useEffect, useState } from "react"
 import { formatDateTime } from "@/lib/utils"
+import { Textarea } from "./ui/textarea"
 
 const FEEDBACK_STATUSES = ["New", "In Progress", "Reviewed", "Resolved", "Archived"] as const
 
@@ -163,11 +164,8 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                 </Badge>
               )}
             </div>
-            <input type="text"
-            placeholder="description...." 
-            value={project.description}
-            onChange={(e) => setProject({ ...project, description: e.target.value })}
-            onBlur={(e) => handleUpdate("description", e.target.value)} className="text-sm sm:text-base text-muted-foreground"/>
+            <h1 className="text-sm sm:text-base  text-muted-foreground">
+           {project.description} </h1>
           </div>
           <Button variant="ghost" size="icon" className="shrink-0">
           { /* <Settings className="w-5 h-5" />*/}
