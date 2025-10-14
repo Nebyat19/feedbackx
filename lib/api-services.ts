@@ -25,6 +25,7 @@ export interface Feedback {
 export interface CreateProjectData {
   title: string
   description: string
+  status: "active" | "paused",
   isPublic: boolean
 }
 

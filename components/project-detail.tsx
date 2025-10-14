@@ -9,26 +9,60 @@ import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import useSWR from "swr"
 import { projectApi, feedbackApi } from "@/lib/api-services"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { formatDateTime } from "@/lib/utils"
 
 const FEEDBACK_STATUSES = ["New", "In Progress", "Reviewed", "Resolved", "Archived"] as const
 
 export function ProjectDetail({ projectId }: { projectId: string }) {
-  const {
-    data: project,
-    error: projectError,
-    mutate,
-  } = useSWR(`project-${projectId}`, () => projectApi.getById(projectId))
-  const {
-    data: feedbackItems,
-    error: feedbackError,
-    mutate: mutateFeedback,
-  } = useSWR(`feedback-${projectId}`, () => feedbackApi.getByProject(projectId))
-
-  const [isPublic, setIsPublic] = useState(project?.isPublic ?? true)
-  const [isActive, setIsActive] = useState(project?.status === "active")
+  const [project, setProject] = useState<any>([])
+  const [projectError, setProjectError] = useState("")
+  const [feedbackItems, setFeedbackItems] = useState<any[]>([])
+  const [feedbackError, setFeedbackError] = useState("")
+  const [isPublic, setIsPublic] = useState(false)
+  const [isActive, setIsActive] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
   const [activeFilter, setActiveFilter] = useState("All")
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const projectData = await projectApi.getById(projectId)
+        setProject(projectData)
+        setIsPublic(projectData.isPublic)
+        setIsActive(projectData.status === "active")
+      } catch (error) {
+        setProjectError("Failed to fetch project")
+        console.error("Failed to fetch project:", error)
+      }
+    }
+
+    const fetchFeedback = async () => {
+      try {
+        const feedbackData = await feedbackApi.getByProject(projectId)
+        setFeedbackItems(feedbackData)
+      } catch (error) {
+        setFeedbackError("Failed to fetch feedback")
+        console.error("Failed to fe tch feedback:", error)
+      }
+    }
+    fetchProject()
+  }, [projectId])
+  const handleUpdate = async (field: "title" | "description", value: string) => {
+    if (!project) return
+    setIsSaving(true)
+    try {
+      const updated = await projectApi.update(projectId, { [field]: value })
+      setProject((prev: any) => ({ ...prev, [field]: value })) // optimistic UI
+    } catch (error) {
+      console.error("Failed to update project:", error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+
+  
 
   const shareLink = `${typeof window !== "undefined" ? window.location.origin : ""}/p/${projectId}`
 
@@ -39,22 +73,21 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
 
   const handlePublicToggle = async (checked: boolean) => {
     setIsPublic(checked)
-    // TODO: Call API to update project visibility
-    // await projectApi.update(projectId, { isPublic: checked })
-    mutate()
+ 
+     await projectApi.update(projectId, { isPublic: checked })
+   // mutate()
   }
 
   const handleStatusToggle = async (checked: boolean) => {
     setIsActive(checked)
-    // TODO: Call API to update project status
-    // await projectApi.update(projectId, { status: checked ? "active" : "paused" })
-    mutate()
+   await projectApi.update(projectId, { status: checked ? "active" : "paused" })
+    //mutate()
   }
 
   const handleFeedbackStatusChange = async (feedbackId: string, newStatus: string) => {
     try {
       await feedbackApi.updateStatus(feedbackId, newStatus)
-      mutateFeedback()
+      //mutateFeedback()
     } catch (error) {
       console.error("Failed to update feedback status:", error)
     }
@@ -90,8 +123,12 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         <div className="flex flex-col sm:flex-row items-start justify-between gap-4 mb-4">
           <div className="flex-1 w-full">
             <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-              <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl">{project?.title}</h1>
-              {isPublic ? (
+              <input placeholder="title..."  type="text"
+              value={project.title}
+              onChange={(e) => setProject({ ...project, title: e.target.value })}
+              onBlur={(e) => handleUpdate("title", e.target.value)}
+              className="font-serif text-2xl sm:text-3xl md:text-4xl"/>
+                            {isPublic ? (
                 <Badge variant="secondary" className="gap-1 text-xs">
                   <Globe className="w-3 h-3" />
                   Public
@@ -110,10 +147,14 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                 </Badge>
               )}
             </div>
-            <p className="text-sm sm:text-base text-muted-foreground">{project?.description}</p>
+            <input type="text"
+            placeholder="description...." 
+            value={project.description}
+            onChange={(e) => setProject({ ...project, description: e.target.value })}
+            onBlur={(e) => handleUpdate("description", e.target.value)} className="text-sm sm:text-base text-muted-foreground"/>
           </div>
           <Button variant="ghost" size="icon" className="shrink-0">
-            <Settings className="w-5 h-5" />
+          { /* <Settings className="w-5 h-5" />*/}
           </Button>
         </div>
 

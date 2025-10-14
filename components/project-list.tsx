@@ -87,12 +87,12 @@ export function ProjectList() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 gap-2 w-full sm:w-auto">
+            <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90 gap-2 w-[full] sm:w-auto">
               <Plus className="w-4 h-4" />
               New Project
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[90%]">
+          <DialogContent className="sm:w-[90%] lg:w-[600px]">
             <DialogHeader>
               <DialogTitle className="font-serif text-2xl">Create New Project</DialogTitle>
               <DialogDescription>Set up a new feedback collection project with a shareable link.</DialogDescription>
