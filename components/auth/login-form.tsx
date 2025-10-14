@@ -20,6 +20,7 @@ export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -28,22 +29,26 @@ export function LoginForm() {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-
+  
     const { data, error } = await authClient.signIn.email({
       email,
       password,
       rememberMe,
     });
-
+  
     if (data?.user) {
       router.push("/dashboard");
       return;
     }
-
-    if (error?.code) {
-      setError(error?.message || "Invalid email or password");
-    } 
-
+  
+    if (error) {
+      if (error?.code =="EMAIL_NOT_VERIFIED") {
+        setInfo("Please verify your email address before signing in");
+      } else {
+        setError(error?.message || "Invalid email or password");
+      }
+    }
+  
     setIsLoading(false);
   };
 
@@ -66,6 +71,12 @@ export function LoginForm() {
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
             <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+        {info && (
+          <Alert variant="default" className="mb-6 flex items-center">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{info}</AlertDescription>
           </Alert>
         )}
 

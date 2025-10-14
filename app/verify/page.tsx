@@ -1,102 +1,131 @@
 "use client"
+
 import { useEffect, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
-import { Loader2, Mail } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Loader2, Mail, XCircle, CheckCircle2 } from "lucide-react"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { authClient } from "@/lib/auth-client"
 
 export default function VerifyPage() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading')
-  const [message, setMessage] = useState('')
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading")
+  const [message, setMessage] = useState("")
   const [resendLoading, setResendLoading] = useState(false)
+  const [email, setEmail] = useState(searchParams.get("email") || "")
 
-  const token = searchParams.get('token') || ''
+  const token = searchParams.get("token") || ""
 
   useEffect(() => {
     const verify = async () => {
       if (!token) {
-        setStatus('error')
-        setMessage('No token provided')
+        setStatus("error")
+        setMessage("Verification link missing or expired.")
         return
       }
 
       try {
         const { data, error } = await authClient.verifyEmail({ query: { token } })
-
-        if (error || data?.status) {
-          setStatus('error')
-          setMessage(error?.message || 'Invalid or expired token')
+        if (error || !data?.user) {
+          setStatus("error")
+          setMessage("Invalid or expired verification link.")
           return
         }
 
-        setStatus('success')
-        setMessage('Your email has been verified successfully!')
-      } catch (err: any) {
-        setStatus('error')
-        setMessage(err.message || 'Something went wrong')
+        setStatus("success")
+        setMessage("Your email has been verified successfully!")
+      } catch {
+        setStatus("error")
+        setMessage("Something went wrong during verification.")
       }
     }
 
     verify()
   }, [token])
 
-  const handleResend = async () => {
+  const handleResend = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email.trim()) {
+      setMessage("Please enter your email.")
+      return
+    }
+
     setResendLoading(true)
     try {
-      await authClient.resendVerificationEmail({ email: searchParams.get('email') || '' })
-      setMessage('Verification email resent! Please check your inbox.')
-      setStatus('success')
-    } catch (err: any) {
-      setMessage(err.message || 'Failed to resend email')
+      await authClient.sendVerificationEmail({ email })
+      setMessage("Verification email resent! Check your inbox.")
+      setStatus("success")
+    } catch {
+      setMessage("Failed to resend verification email.")
     } finally {
       setResendLoading(false)
     }
   }
 
-  if (status === 'loading') {
-    return (
-      <div className="flex flex-col justify-center items-center h-screen px-4">
-        <Loader2 className="w-8 h-8 animate-spin mb-4" />
-        <p className="text-muted-foreground">Verifying your email...</p>
-      </div>
-    )
-  }
-
   return (
-    <div className="flex flex-col justify-center items-center h-screen px-4">
-      <div className="bg-card rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-md text-center">
-        <div className="mb-4">
-          <Mail className="w-12 h-12 mx-auto text-foreground" />
+    <div className="flex items-center justify-center min-h-screen bg-background px-4">
+      <div className="bg-card w-full max-w-md rounded-2xl shadow-lg p-8 text-center">
+        {/* Icon */}
+        <div className="flex justify-center mb-6">
+          {status === "loading" && <Loader2 className="w-10 h-10 animate-spin text-muted-foreground" />}
+          {status === "success" && <CheckCircle2 className="w-10 h-10 text-green-500" />}
+          {status === "error" && <XCircle className="w-10 h-10 text-red-500" />}
         </div>
-        <Alert variant={status === 'success' ? 'default' : 'destructive'}>
-          <AlertDescription>{message}</AlertDescription>
-        </Alert>
 
-        {status === 'error' && (
-          <div className="mt-6 flex justify-center">
+        {/* Title */}
+        <h1 className="text-2xl font-semibold mb-2">
+          {status === "loading" && "Verifying your email"}
+          {status === "success" && "Email Verified"}
+          {status === "error" && "Verification Failed"}
+        </h1>
+
+        {/* Message */}
+        <p className="text-muted-foreground mb-6">{message}</p>
+
+        {/* Loading State */}
+        {status === "loading" && (
+          <p className="text-sm text-muted-foreground animate-pulse">
+            Please wait while we confirm your verification...
+          </p>
+        )}
+
+        {/* Success State */}
+        {status === "success" && (
+          <Button
+            onClick={() => router.push("/login")}
+            className="w-full h-11 bg-secondary hover:bg-secondary/90"
+          >
+            Continue to Login
+          </Button>
+        )}
+
+        {/* Error State */}
+        {status === "error" && (
+          <form onSubmit={handleResend} className="space-y-4">
+            <Input
+              type="email"
+              placeholder="Enter your email to resend link"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-11 text-center"
+              required
+            />
             <Button
-              onClick={handleResend}
+              type="submit"
               disabled={resendLoading}
-              className="bg-secondary hover:bg-secondary/90"
+              className="w-full h-11 bg-secondary hover:bg-secondary/90"
             >
-              {resendLoading ? 'Resending...' : 'Resend Verification Email'}
+              {resendLoading ? "Resending..." : "Resend Verification Email"}
             </Button>
-          </div>
+          </form>
         )}
 
-        {status === 'success' && (
-          <div className="mt-6 flex justify-center">
-            <Button
-              onClick={() => router.push('/login')}
-              className="bg-secondary hover:bg-secondary/90"
-            >
-              Back to Login
-            </Button>
-          </div>
-        )}
+        {/* Footer */}
+        <div className="mt-8 text-xs text-muted-foreground">
+          <Mail className="inline w-4 h-4 mr-1" />
+          Powered by FeedbackX Authentication
+        </div>
       </div>
     </div>
   )
