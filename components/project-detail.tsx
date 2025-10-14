@@ -12,7 +12,7 @@ import { projectApi, feedbackApi } from "@/lib/api-services"
 import { useEffect, useState } from "react"
 import { formatDateTime } from "@/lib/utils"
 
-const FEEDBACK_STATUSES = ["New", "In Progress", "Reviewed", "Resolved", "Archived"] as const
+const FEEDBACK_STATUSES = ["new", "In Progress", "Reviewed", "Resolved", "Archived"] as const
 
 export function ProjectDetail({ projectId }: { projectId: string }) {
   const [project, setProject] = useState<any>([])
@@ -47,6 +47,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
       }
     }
     fetchProject()
+    fetchFeedback()
   }, [projectId])
   const handleUpdate = async (field: "title" | "description", value: string) => {
     if (!project) return
@@ -86,7 +87,11 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
 
   const handleFeedbackStatusChange = async (feedbackId: string, newStatus: string) => {
     try {
+      setFeedbackItems((prev) =>
+        prev.map((item) => (item.id === feedbackId ? { ...item, status: newStatus } : item))
+      )
       await feedbackApi.updateStatus(feedbackId, newStatus)
+      
       //mutateFeedback()
     } catch (error) {
       console.error("Failed to update feedback status:", error)
@@ -209,17 +214,18 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
         {/* Stats */}
         <div className="grid grid-cols-1 xs:grid-cols-3 gap-3 sm:gap-4 mt-6">
           <div className="p-4 rounded-lg bg-muted/30">
-            <p className="text-xl sm:text-2xl font-bold">{project?.feedbackCount || 0}</p>
+            <p className="text-xl sm:text-2xl font-bold">{feedbackItems?.length  || 0}</p>
             <p className="text-xs sm:text-sm text-muted-foreground">Total Feedback</p>
           </div>
           <div className="p-4 rounded-lg bg-muted/30">
             <p className="text-xl sm:text-2xl font-bold">{feedbackItems?.length || 0}</p>
             <p className="text-xs sm:text-sm text-muted-foreground">Loaded</p>
           </div>
-          <div className="p-4 rounded-lg bg-muted/30">
+           {/* <div className="p-4 rounded-lg bg-muted/30">
             <p className="text-xl sm:text-2xl font-bold">-</p>
-            <p className="text-xs sm:text-sm text-muted-foreground">Avg. Rating</p>
+           <p className="text-xs sm:text-sm text-muted-foreground">Avg. Rating</p>
           </div>
+          */}
         </div>
       </div>
 
@@ -263,7 +269,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                 key={item.id}
                 className="p-4 sm:p-6 rounded-xl border border-border hover:border-accent/50 transition-all group"
               >
-                <div className="flex flex-col sm:flex-row items-start justify-between gap-3 sm:gap-4 mb-3">
+                <div className="flex  items-start justify-between gap-3 sm:gap-4 mb-3">
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center group-hover:bg-accent/20 transition-colors shrink-0">
                       <MessageSquare className="w-5 h-5 text-muted-foreground group-hover:text-accent-foreground" />
