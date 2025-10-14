@@ -64,13 +64,42 @@ export async function sendVerificationEmail(email, token) {
   await sendEmail(email, "Verify your email", html)
 }
 
-export async function sendResetPasswordEmail(email, token) {
-  const url = `https://feedbackx.me/reset-password?token=${token}`
-  const html = buildTemplate(
-    "Reset your password",
-    "We received a request to reset your FeedbackX account password. Click below to continue.",
-    url,
-    "Reset Password"
-  )
-  await sendEmail(email, "Reset your password", html)
+export async function sendPasswordResetOTP(email, otp) {
+
+  const html =`<div style="${baseStyles}">
+    <div style="${cardStyles}">
+      <div style="font-size: 32px; font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; color: oklch(0.145 0 0);">
+        FX
+      </div>
+      <h2 style="font-size: 20px; color: oklch(0.205 0 0); margin-bottom: 10px;">
+        Password Reset OTP
+      </h2>
+      <p style="color: oklch(0.556 0 0); font-size: 15px; margin-bottom: 30px;">
+        Use the following One-Time Password (OTP) to reset your password. This OTP is valid for the next 5 minutes.
+      </p>
+      <div style="
+           display:inline-block;
+           background-color: oklch(0.205 0 0);
+           color: oklch(0.985 0 0);
+           padding: 12px 24px; 
+           border-radius: 8px;
+           text-decoration: none;
+           font-weight: 500;
+           font-size: 18px;
+           letter-spacing: 2px;
+         ">
+        ${otp}
+      </div>
+      <p style="font-size: 12px; color: oklch(0.556 0 0); margin-top: 30px;">
+        If you didn’t request this, you can safely ignore this email.
+      </p>
+      <p style="font-size: 11px; color: oklch(0.556 0 0); margin-top: 10px;">
+        Sent securely from <a href="https://feedbackx.me" style="color: oklch(0.205 0 0); text-decoration: none;">FeedbackX</a>
+      </p>
+    </div>
+  </div>
+  `
+  await sendEmail(email, "Your password reset OTP", html)
 }
+  
+ 

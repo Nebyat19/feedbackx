@@ -4,7 +4,8 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { PrismaClient } from "@prisma/client";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { sendVerificationEmail } from "./send-email";
+import { sendVerificationEmail, sendPasswordResetOTP } from "./send-email";
+import { emailOTP } from "better-auth/plugins";
 
 const client = new MongoClient(process.env.DATABASE_URL);
 const db = client.db();
@@ -41,6 +42,20 @@ export const auth = betterAuth({
         await sendVerificationEmail(user.email, token ); 
       },
     },
+    plugins: [
+      emailOTP({
+        async sendVerificationOTP({ email, otp, type }) {
+        
+          if (type === "forget-password") {
+            await sendPasswordResetOTP(email, otp);
+          }
+          
+        },
+        otpLength: 6, 
+        expiresIn: 300, 
+        allowedAttempts: 3, 
+      })
+    ],
     trustedOrigins: [
         "http://localhost:3000",
         "https://feedbackx.me",
