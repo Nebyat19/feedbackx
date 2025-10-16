@@ -95,7 +95,7 @@ export function Header() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => window.location.href="/profile"}>
                 <User className="w-4 h-4 mr-2" />
                 Profile
               </DropdownMenuItem>
