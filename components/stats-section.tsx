@@ -1,12 +1,12 @@
 "use client"
 import { projectApi } from "@/lib/api-services"
-import { MessageSquare, TrendingUp, Users, CheckCircle } from "lucide-react"
+import { MessageSquare, TimerIcon,PlaneIcon, CheckCircle } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const statsIcon = {
   TotalFeedback: MessageSquare,
-  ThisWeek: TrendingUp,
-  New: Users,
+  ThisWeek: PlaneIcon,
+  New: TimerIcon,
   Resolved: CheckCircle,
 }
 

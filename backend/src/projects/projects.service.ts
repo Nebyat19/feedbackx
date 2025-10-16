@@ -156,7 +156,7 @@ export class ProjectsService {
 
     return [
       { label: "Total Feedback", value: total, change: changeFormatted, icon: "TotalFeedback" },
-      { label: "This Week", value: thisWeek, change: changeFormatted, icon: "TotalFeedback" },
+      { label: "This Week", value: thisWeek, change: changeFormatted, icon: "ThisWeek" },
       { label: "New", value: newFeedback, change: changeFormatted, icon: "New" },
       { label: "Resolved", value: resolvedFeedback, change: changeFormatted, icon: "Resolved" },
     ]
