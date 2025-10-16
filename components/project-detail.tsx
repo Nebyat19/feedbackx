@@ -46,7 +46,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const [isSaving, setIsSaving] = useState(false);
   const [isFething, setIsFetching] = useState(true);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [stats, setStats] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>({});
   const [showSettings, setShowSettings] = useState(false)
 
   const fetchProject = async () => {
@@ -262,42 +262,73 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           </div>
         </div>
         )}
-        {/* projet stats */}
-        <div className="mt-6 p-6 rounded-2xl bg-card shadow-sm">
-          <h3 className="text-lg font-semibold mb-6">Project Statistics</h3>
+        
+        {/* Project Statistics */}
+        <div className="mt-6 rounded-2xl overflow-hidden bg-gradient-to-br from-card via-card to-muted/20">
+          <div className="p-6 sm:p-8 border-b border-border/50">
+            <h3 className="text-2xl font-serif font-bold">Project Statistics</h3>
+            <p className="text-sm text-muted-foreground mt-1">Real-time feedback analytics</p>
+          </div>
 
           {isFething ? (
-            <div className="flex items-center justify-center py-10">
-              <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+            <div className="flex flex-col items-center justify-center py-20">
+              <Loader2 className="w-10 h-10 animate-spin text-accent mb-4" />
+              <p className="text-sm text-muted-foreground">Loading statistics...</p>
             </div>
           ) : stats && Object.keys(stats).length > 0 ? (
-            <div className="space-y-8">
-              {/* Total Feedback */}
-              <div className="flex flex-col sm:flex-row items-center justify-between bg-accent/10 rounded-xl p-6">
-                <h4 className="text-sm text-muted-foreground font-medium mb-2 sm:mb-0">
-                  Total Feedback
-                </h4>
-                <p className="text-3xl font-serif font-bold">
-                  {stats.total || 0}
-                </p>
+            <div className="p-6 sm:p-8 space-y-8">
+              {/* Total Feedback - Hero metric */}
+              <div className="relative group animate-fade-in">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-accent/10 to-transparent rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+                <div className="relative bg-card/80 backdrop-blur-sm rounded-2xl p-8 border border-accent/20 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-accent/10 mb-4">
+                      <MessageSquare className="w-8 h-8 text-accent" />
+                    </div>
+                    <p className="text-sm font-medium text-muted-foreground mb-2">
+                      Total Feedback Received
+                    </p>
+                    <p className="text-7xl font-serif font-bold bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent mb-1">
+                      {stats.total || 0}
+                    </p>
+                    <p className="text-xs text-muted-foreground/70">
+                      submissions and counting
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Feedback by Status */}
-              <div>
-                <h4 className="text-sm text-muted-foreground font-medium mb-3">
-                  By Status
-                </h4>
+              <div className="animate-fade-in" style={{ animationDelay: "0.1s", animationFillMode: "both" }}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                  <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    Status Breakdown
+                  </h4>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
                   {Object.entries(stats.byStatus || {}).map(
-                    ([status, count]) => (
+                    ([status, count], index) => (
                       <div
                         key={status}
-                        className="flex flex-col items-center justify-center p-4 rounded-lg bg-accent/10 hover:bg-accent/20 transition"
+                        className="group relative hover-scale"
+                        style={{ 
+                          animationDelay: `${0.2 + index * 0.1}s`,
+                          animationFillMode: "both"
+                        }}
                       >
-                        <p className="text-xl font-semibold">{count}</p>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          {status}
-                        </p>
+                        <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                        <div className="relative bg-card rounded-xl p-6 border border-border/50 group-hover:border-accent/30 shadow-sm group-hover:shadow-md transition-all duration-300">
+                          <div className="text-center space-y-2">
+                            <p className="text-4xl font-serif font-bold text-foreground">
+                              {String(count)}
+                            </p>
+                            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                              {status}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     )
                   )}
@@ -305,19 +336,35 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
               </div>
 
               {/* Feedback by Category */}
-              <div>
-                <h4 className="text-sm text-muted-foreground font-medium mb-3">
-                  By Category
-                </h4>
-                <div className="flex flex-wrap gap-2">
+              <div className="animate-fade-in" style={{ animationDelay: "0.3s", animationFillMode: "both" }}>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                  <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    Category Distribution
+                  </h4>
+                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+                </div>
+                <div className="flex flex-wrap gap-3">
                   {Object.entries(stats.byCategory || {}).map(
-                    ([category, count]) => (
+                    ([category, count], index) => (
                       <div
                         key={category}
-                        className="flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-sm font-medium"
+                        className="group relative hover-scale animate-fade-in"
+                        style={{ 
+                          animationDelay: `${0.4 + index * 0.05}s`,
+                          animationFillMode: "both"
+                        }}
                       >
-                        <span className="text-sm px-3">{category}</span>
-                        <span className="text-muted-foreground">({count})</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-accent/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="relative bg-card rounded-lg px-6 py-4 border border-border/50 group-hover:border-accent/30 shadow-sm group-hover:shadow-md transition-all duration-300">
+                          <div className="flex items-center gap-4">
+                            <span className="text-base font-semibold text-foreground">{category}</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-1 h-6 bg-accent/50 rounded-full" />
+                              <span className="text-3xl font-serif font-bold text-accent">{String(count)}</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     )
                   )}
@@ -325,9 +372,15 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
               </div>
             </div>
           ) : (
-            <p className="text-center text-muted-foreground py-6">
-              No statistics available.
-            </p>
+            <div className="text-center py-20 px-6">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-muted mb-4">
+                <MessageSquare className="w-10 h-10 text-muted-foreground" />
+              </div>
+              <p className="text-lg font-medium text-muted-foreground mb-2">No statistics available yet</p>
+              <p className="text-sm text-muted-foreground/70 max-w-md mx-auto">
+                Start collecting feedback to see detailed insights and analytics here.
+              </p>
+            </div>
           )}
         </div>
 
@@ -380,11 +433,6 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground">Loaded</p>
           </div>
-          {/* <div className="p-4 rounded-lg bg-muted/30">
-            <p className="text-xl sm:text-2xl font-bold">-</p>
-           <p className="text-xs sm:text-sm text-muted-foreground">Avg. Rating</p>
-          </div>
-          */}
         </div>
       </div>
 
