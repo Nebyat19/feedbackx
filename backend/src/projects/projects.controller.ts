@@ -21,7 +21,11 @@ interface AuthenticatedRequest extends Request {
 @Controller("projects")
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
-
+  @UseGuards(AuthGuard)
+  @Get("stats")
+  getAllStats(@Req() req: AuthenticatedRequest) {
+    return this.projectsService.getStats(req.user.id)
+  }
   @UseGuards(AuthGuard)
   @Post()
   create(@Req() req: AuthenticatedRequest, @Body() dto: CreateProjectDto) {
@@ -50,18 +54,20 @@ export class ProjectsController {
     return this.projectsService.update(id, req.user.id, dto)
   }
 
+ 
+
+  @UseGuards(AuthGuard) //project status
+  @Get(":id/stats")
+  getStats(@Param("id") id: string, @Req() req: AuthenticatedRequest) {
+    return this.projectsService.getProejctStats(id, req.user.id)
+  }
+
+ 
   @UseGuards(AuthGuard)
   @Delete(":id")
   delete(@Param("id") id: string, @Req() req: AuthenticatedRequest) {
     return this.projectsService.delete(id, req.user.id)
   }
-
-  @UseGuards(AuthGuard)
-  @Get(":id/stats")
-  getStats(@Param("id") id: string, @Req() req: AuthenticatedRequest) {
-    return this.projectsService.getStats(id, req.user.id)
-  }
-
   //return projet for feedback
   @Get("p/:id")
   getProjectForFeedback(@Param("id") id: string) {

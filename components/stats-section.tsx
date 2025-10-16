@@ -1,39 +1,67 @@
+"use client"
+import { projectApi } from "@/lib/api-services"
 import { MessageSquare, TrendingUp, Users, CheckCircle } from "lucide-react"
+import { useEffect, useState } from "react"
 
-const stats = [
-  {
-    label: "Total Feedback",
-    value: "1,247",
-    change: "+12%",
-    icon: MessageSquare,
-  },
-  {
-    label: "This Week",
-    value: "89",
-    change: "+23%",
-    icon: TrendingUp,
-  },
-  {
-    label: "Contributors",
-    value: "342",
-    change: "+8%",
-    icon: Users,
-  },
-  {
-    label: "Resolved",
-    value: "1,089",
-    change: "+15%",
-    icon: CheckCircle,
-  },
-]
+const statsIcon = {
+  TotalFeedback: MessageSquare,
+  ThisWeek: TrendingUp,
+  New: Users,
+  Resolved: CheckCircle,
+}
 
 export function StatsSection() {
+  const [stats, setStats] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const res = await projectApi.getAllstats()
+        if (res) setStats(res)
+      } catch (err) {
+        console.error("Failed to load stats:", err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadStats()
+  }, [])
+
+  if (loading) {
+    // skeleton loader (clean and responsive)
+    return (
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <div key={i} className="bg-card rounded-2xl p-5 sm:p-6 animate-pulse">
+            <div className="flex items-start justify-between mb-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/10" />
+              <div className="h-4 w-10 bg-secondary/20 rounded-full" />
+            </div>
+            <div className="h-6 w-20 bg-muted rounded mb-2" />
+            <div className="h-3 w-24 bg-muted rounded" />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  const formattedStats = stats.map((stat: any) => ({
+    label: stat.label,
+    value: stat.value,
+    change: stat.change,
+    icon: statsIcon[stat.icon as keyof typeof statsIcon],
+  }))
+
   return (
     <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
-      {stats.map((stat) => {
+      {formattedStats.map((stat) => {
         const Icon = stat.icon
         return (
-          <div key={stat.label} className="bg-card rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div
+            key={stat.label}
+            className="bg-card rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
             <div className="flex items-start justify-between mb-4">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-accent/20 flex items-center justify-center">
                 <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-accent-foreground" />

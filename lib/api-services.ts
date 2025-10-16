@@ -92,6 +92,14 @@ export const projectApi = {
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/projects/${id}`)
   },
+  getAllstats: async (): Promise<any> => {
+    const response = await apiClient.get("/projects/stats")
+    return response.data
+  },
+  getStats: async (id: string): Promise<any> => {
+    const response = await apiClient.get(`/projects/${id}/stats`)
+    return response.data
+  },
 }
 
 export const feedbackApi = {

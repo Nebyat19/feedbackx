@@ -81,7 +81,7 @@ export class ProjectsService {
     return { message: "Project deleted successfully" }
   }
 
-  async getStats(id: string, userId: string) {
+  async getProejctStats(id: string, userId: string) {
     // Check ownership
     await this.findOne(id, userId)
 
@@ -110,5 +110,57 @@ export class ProjectsService {
         return acc
       }, {}),
     }
+  }
+  async getStats(userId: string) {
+    const projects = await this.prisma.project.findMany({
+      where: { userId },
+      include: { feedback: true },
+    })
+
+    if (!projects.length) {
+      return {
+        totalFeedback: 0,
+        newFeedback: 0,
+        resolvedFeedback: 0,
+        thisWeekFeedback: 0,
+        change: "0%",
+      }
+    }
+
+    // Combine feedback from all projects
+    const allFeedback = projects.flatMap((p) => p.feedback)
+
+    const total = allFeedback.length
+    const newFeedback = allFeedback.filter((f) => f.status === "New").length
+    const resolvedFeedback = allFeedback.filter((f) => f.status === "Resolved").length
+
+    const now = new Date()
+    const oneWeekAgo = new Date(now)
+    oneWeekAgo.setDate(now.getDate() - 7)
+
+    const twoWeeksAgo = new Date(now)
+    twoWeeksAgo.setDate(now.getDate() - 14)
+
+    const thisWeek = allFeedback.filter((f) => f.createdAt >= oneWeekAgo).length
+    const lastWeek = allFeedback.filter(
+      (f) => f.createdAt < oneWeekAgo && f.createdAt >= twoWeeksAgo
+    ).length
+
+    let change = 0
+    if (lastWeek === 0 && thisWeek > 0) change = 100
+    else if (lastWeek === 0 && thisWeek === 0) change = 0
+    else change = ((thisWeek - lastWeek) / lastWeek) * 100
+
+    const changeFormatted =
+      change === 0 ? "0%" : `${change > 0 ? "+" : ""}${change.toFixed(1)}%`
+
+    return [
+      { label: "Total Feedback", value: total, change: changeFormatted, icon: "TotalFeedback" },
+      { label: "This Week", value: thisWeek, change: changeFormatted, icon: "TotalFeedback" },
+      { label: "New", value: newFeedback, change: changeFormatted, icon: "New" },
+      { label: "Resolved", value: resolvedFeedback, change: changeFormatted, icon: "Resolved" },
+    ]
+ 
+    
   }
 }

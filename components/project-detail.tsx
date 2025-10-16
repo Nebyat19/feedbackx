@@ -23,6 +23,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   const [isPublic, setIsPublic] = useState(false)
   const [isActive, setIsActive] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
+  const [isFething, setIsFetching] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
   const fetchProject = async () => {
     try {
@@ -43,6 +44,8 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
     } catch (error) {
       setFeedbackError("Failed to fetch feedback")
       console.error("Failed to fe tch feedback:", error)
+    }finally {
+      setIsFetching(false)
     }
   }
   
@@ -266,10 +269,10 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
           </div>
         ) : feedbackError ? (
-          <p className="text-primary text-center py-12">No feedback found!</p>
+          <p className="text-primary text-center py-12"> {isFething? "Loading ...":"No feedback found!"} </p>
         ) : filteredFeedback && filteredFeedback.length === 0 ? (
           <p className="text-muted-foreground text-center py-12">
-            {activeFilter === "All" ? "No feedback yet." : `No ${activeFilter.toLowerCase()} feedback.`}
+            {activeFilter === "All" ? isFething? "Loading ...":"No feedback found!" : `No ${activeFilter.toLowerCase()} feedback.`}
           </p>
         ) : (
           <div className="space-y-4">
