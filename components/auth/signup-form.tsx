@@ -53,7 +53,7 @@ export function SignupForm() {
   if (emailSent) {
     return (
       <div className="w-full max-w-md mx-auto">
-        <div className="bg-card rounded-2xl shadow-lg p-8 text-center">
+        <div className=" p-8 text-center">
           <div className="inline-flex items-center justify-center w-14 h-14 bg-foreground rounded-xl mb-4">
             <Mail className="w-6 h-6 text-card" />
           </div>
