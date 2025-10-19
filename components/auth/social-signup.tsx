@@ -23,7 +23,7 @@ export const SocialSigUp = ({ setError }: SocialSigUpProps) => {
   };
 
   return (
-    <div className="mt-7 flex flex-col gap-2">
+    <div className="mt-7 flex flex-col sm:flex-row gap-2">
       {/* GitHub */}
       <button
         onClick={() => handleSocialSignup("github")}
