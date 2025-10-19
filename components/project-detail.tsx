@@ -325,7 +325,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                               {String(count)}
                             </p>
                             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                              {status}
+                              {status.toUpperCase()}
                             </p>
                           </div>
                         </div>
@@ -358,7 +358,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                         <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-accent/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         <div className="relative bg-card rounded-lg px-6 py-4 border border-border/50 group-hover:border-accent/30 shadow-sm group-hover:shadow-md transition-all duration-300">
                           <div className="flex items-center gap-4">
-                            <span className="text-base font-semibold text-foreground">{category}</span>
+                            <span className="text-base font-semibold text-foreground">{category.toUpperCase()}</span>
                             <div className="flex items-center gap-2">
                               <div className="w-1 h-6 bg-accent/50 rounded-full" />
                               <span className="text-3xl font-serif font-bold text-accent">{String(count)}</span>

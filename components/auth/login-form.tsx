@@ -79,13 +79,6 @@ export function LoginForm() {
             <AlertDescription>{info}</AlertDescription>
           </Alert>
         )}
-        {/* Social Signup */}
-        <SocialSigUp setError={setError} />
-        {/* Divider */}
-        <div className="flex w-full items-center gap-2 py-6 text-sm text-slate-600">
-          <div className="h-px w-full bg-slate-200"></div>
-          or <div className="h-px w-full bg-slate-200"></div>
-        </div>
 
         {/* Email Signup Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -167,7 +160,14 @@ export function LoginForm() {
             )}
           </Button>
         </form>
-
+         {/* Divider */}
+         <div className="flex w-full items-center gap-2 pt-6 text-sm text-slate-600">
+          <div className="h-px w-full bg-slate-200"></div>
+          or <div className="h-px w-full bg-slate-200"></div>
+        </div>
+        {/* Social Signup */}
+        <SocialSigUp setError={setError} />
+       
         <div className="mt-6 text-center text-sm">
           <span className="text-muted-foreground">Don't have an account? </span>
           <Link
