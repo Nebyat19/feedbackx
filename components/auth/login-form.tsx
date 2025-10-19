@@ -58,7 +58,7 @@ export function LoginForm() {
        <div className="inline-flex items-center   justify-center w-12 h-12 bg-foreground rounded-xl mb-4">
             <span className="text-card font-bold text-xl">FX</span>
           </div>
-          <p className="text-sm text-gray-900">FEEDBACKX.ME</p>
+          <p className="text-sm text-gray-900">feedback.me</p>
       </div>
       <div className="pt-20 pb-20">
 

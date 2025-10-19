@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import {
-  AlertCircle,
-  Loader2,
-  Mail
-} from "lucide-react";
+import { AlertCircle, Eye, EyeOff, Loader2, Mail } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { SocialSigUp } from "./social-signup";
 
@@ -22,6 +18,7 @@ export function SignupForm() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,8 +50,6 @@ export function SignupForm() {
     }
   };
 
-  
-
   if (emailSent) {
     return (
       <div className="w-full max-w-md mx-auto">
@@ -81,17 +76,19 @@ export function SignupForm() {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="bg-card rounded-2xl shadow-lg p-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-foreground rounded-xl mb-4">
+    <div className="w-full mt-20 max-w-md">
+      <div className="flex items-center gap-1 sm:justify-center w-full">
+      <div className="inline-flex items-center justify-center w-12 h-12 bg-foreground rounded-xl mb-4">
             <span className="text-card font-bold text-xl">FX</span>
           </div>
+          <p className="text-sm text-gray-900"></p>
+      </div>
+        <div className="text-center mb-8">
+         
           <h1 className="font-serif text-3xl font-bold mb-2">
             Create your account
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Start collecting feedback instantly
           </p>
         </div>
@@ -102,14 +99,6 @@ export function SignupForm() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-
-        {/* Social Signup */}
-        <SocialSigUp setError={setError} />
-        {/* Divider */}
-        <div className="flex w-full items-center gap-2 py-6 text-sm text-slate-600">
-          <div className="h-px w-full bg-slate-200"></div>
-          or  <div className="h-px w-full bg-slate-200"></div>
-        </div>
 
         {/* Email Signup Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -139,18 +128,30 @@ export function SignupForm() {
             />
           </div>
 
-          <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={isLoading}
-            />
-          </div>
+          <div className="flex items-center">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+                className="h-11 pr-10" // add right padding for the icon
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="-ml-10 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
 
           <div>
             <Label htmlFor="confirmPassword">Confirm Password</Label>
@@ -180,7 +181,13 @@ export function SignupForm() {
             )}
           </Button>
         </form>
-
+        {/* Divider */}
+        <div className="flex w-full items-center gap-2 pt-5 text-sm text-slate-600">
+          <div className="h-px w-full bg-slate-200"></div>
+          or <div className="h-px w-full bg-slate-200"></div>
+        </div>
+        {/* Social Signup */}
+        <SocialSigUp setError={setError} />
         {/* Footer */}
         <div className="mt-6 text-center text-sm">
           <span className="text-muted-foreground">
@@ -194,7 +201,7 @@ export function SignupForm() {
           </Link>
         </div>
 
-        <div className="mt-4 text-center text-xs text-muted-foreground">
+        <div className="text-center text-xs text-muted-foreground">
           By signing up, you agree to our{" "}
           <Link href="/terms" className="underline hover:text-foreground">
             Terms
@@ -206,6 +213,7 @@ export function SignupForm() {
           .
         </div>
       </div>
-    </div>
+   
+
   );
 }
