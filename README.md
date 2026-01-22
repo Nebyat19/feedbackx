@@ -26,7 +26,7 @@ Collect anonymous, honest feedback from your team, customers, or community—fas
 
 ## Screenshot
 
-![FeedbackX Dashboard](link-to-your-dashboard-screenshot.png)  
+![FeedbackX Dashboard](docs/dashboard-screenshot.png)  
 
 
 ---
